@@ -6,16 +6,17 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import "moment/locale/es";
 import { CalendarEvent } from "./components/CalendarEvent";
 import { EventsProps } from "./model/Events";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CalendarModal } from "./components/CalendarModal";
 import { initialStateEventsProps, initialStateModalProps } from "../../model/stateUI";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../model/rootReducer";
 import { uiOpenModal } from "../../actions/ui";
-import { eventSetActive } from "../../actions/events";
+import { eventSetActive, eventStartLoaded } from "../../actions/events";
 import { AddNewFab } from "./components/AddNewFab";
 import { DeleteEventFab } from "./components/DeleteEventFab";
 import { initialStateForm } from "./utils/initialStateForm";
+import { initialStateAuthProps } from "../../model/stateUI";
 const localizer = momentLocalizer(moment);
 moment.locale("es");
 
@@ -23,6 +24,7 @@ type EventCalendarProps = ((event: EventsProps, e: React.SyntheticEvent<HTMLElem
 export const CalendarScreen = () => {
   const { modalIsOpen }: initialStateModalProps = useSelector((state: RootState) => state.ui);
   const { events, activeEvent }: initialStateEventsProps = useSelector((state: RootState) => state.calendar);
+  const { uid }: initialStateAuthProps = useSelector((state: RootState) => state.auth);
   const [formValues, setFormValues] = useState(initialStateForm);
   const dispatch = useDispatch();
   const initialState: View =
@@ -39,14 +41,20 @@ export const CalendarScreen = () => {
       : "month";
 
   const [lastView, setLastView] = useState(initialState);
+
+  useEffect(() => {
+    dispatch(eventStartLoaded());
+  }, [dispatch]);
+
   const evenStyleGetter: EventPropGetter<EventsProps> = (event) => {
     const { bgcolor } = event;
+
     const style = {
       backgroundColor: bgcolor,
       borderRadius: "0px",
       opacity: 0.8,
       display: "block",
-      color: "white",
+      color: uid === event.user._id ? "white" : "red",
     };
     return { style };
   };
@@ -61,7 +69,7 @@ export const CalendarScreen = () => {
     localStorage.setItem("lastView", view);
   };
   return (
-    <div className="d-flex flex-column vh-100">
+    <div className="d-flex flex-column vh-100 animate__animated animate__fadeIn">
       <Navbar />
       <Calendar
         localizer={localizer}

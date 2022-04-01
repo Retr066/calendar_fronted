@@ -9,8 +9,15 @@ export interface EventsProps {
   notes: string;
   user: {
     _id: string;
-    name: string;
+    fullName: string;
   };
+}
+export interface EventsPreviewProps {
+  title: string;
+  start: stringOrDate;
+  end: stringOrDate;
+  bgcolor: string;
+  notes: string;
 }
 export interface ValuesFormModalProps {
   title: string;

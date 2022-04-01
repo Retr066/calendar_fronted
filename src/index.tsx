@@ -3,6 +3,9 @@ import ReactDOM from "react-dom";
 import CalendarApp from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
+
+import "sweetalert2/src/sweetalert2.scss";
+
 ReactDOM.render(<CalendarApp />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function

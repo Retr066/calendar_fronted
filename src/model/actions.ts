@@ -1,4 +1,4 @@
-import { TypesEvent, TypesModal } from "./types";
+import { TypesAuth, TypesEvent, TypesModal } from "./types";
 
 export interface actionUI<T> {
   type: TypesModal;
@@ -7,5 +7,10 @@ export interface actionUI<T> {
 
 export interface actionEvent<T> {
   type: TypesEvent;
+  payload: T;
+}
+
+export interface actionAuth<T> {
+  type: TypesAuth;
   payload: T;
 }

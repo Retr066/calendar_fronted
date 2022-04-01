@@ -1,7 +1,7 @@
 import { ErrorMessage, FastField, Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
 import moment from "moment";
 import { useDispatch } from "react-redux";
-import { eventAddNew, eventUpdated } from "../../../actions/events";
+import { eventStartAddNew, eventStartUpdated } from "../../../actions/events";
 
 import { EventsProps, ValuesFormModalProps } from "../model/Events";
 
@@ -115,7 +115,7 @@ export const FormEvent = ({ title, values, activeEvent, closeModal }: MyFormProp
     handleSubmit: (values: ValuesFormModalProps) => {
       if (activeEvent) {
         dispatch(
-          eventUpdated({
+          eventStartUpdated({
             ...values,
             id: activeEvent.id,
             user: activeEvent.user,
@@ -123,13 +123,8 @@ export const FormEvent = ({ title, values, activeEvent, closeModal }: MyFormProp
         );
       } else {
         dispatch(
-          eventAddNew({
+          eventStartAddNew({
             ...values,
-            id: new Date().getTime().toString(),
-            user: {
-              _id: "1213",
-              name: "Retr0",
-            },
           })
         );
       }

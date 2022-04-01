@@ -1,28 +1,14 @@
-import moment from "moment";
 import { actionEvent } from "../model/actions";
 import { initialStateEventsProps } from "../model/stateUI";
 import { TypesEvent } from "../model/types";
 import { EventsProps } from "../pages/Calendar/model/Events";
 
 const initialState: initialStateEventsProps = {
-  events: [
-    {
-      id: new Date().getTime().toString(),
-      title: "Cumpleaños del jefe",
-      start: moment().toDate(),
-      end: moment().add(2, "hours").toDate(),
-      bgcolor: "#FF0000",
-      notes: "comprar el pastel",
-      user: {
-        _id: "123",
-        name: "Retr0",
-      },
-    },
-  ],
+  events: [],
   activeEvent: null,
 };
 
-export const calendarReducer = (state = initialState, action: actionEvent<EventsProps>): initialStateEventsProps => {
+export const calendarReducer = (state = initialState, action: actionEvent<EventsProps & EventsProps[]>): initialStateEventsProps => {
   switch (action.type) {
     case TypesEvent.eventSetActive:
       return {
@@ -49,6 +35,15 @@ export const calendarReducer = (state = initialState, action: actionEvent<Events
         ...state,
         events: state.events.filter((event) => event.id !== state.activeEvent?.id),
         activeEvent: null,
+      };
+    case TypesEvent.eventLoaded:
+      return {
+        ...state,
+        events: [...action.payload],
+      };
+    case TypesEvent.eventLogout:
+      return {
+        ...initialState,
       };
     default:
       return state;

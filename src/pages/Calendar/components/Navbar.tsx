@@ -1,13 +1,19 @@
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
-const handleLogout = () => {};
+import { startLogout } from "../../../actions/auth";
+import { RootState } from "../../../model/rootReducer";
 
 export const Navbar = () => {
+  const { fullName } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(startLogout());
+  };
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
-          Calendar App : Usuario #Retr0
+          Calendar App : Usuario # {fullName}
         </Link>
         <button
           className="navbar-toggler"
@@ -20,16 +26,9 @@ export const Navbar = () => {
         >
           <span className="navbar-toggler-icon" />
         </button>
-        <div
-          className="collapse navbar-collapse justify-content-end"
-          id="navbarSupportedContent"
-        >
+        <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
           <div className="d-flex">
-            <button
-              className="btn btn-outline-danger"
-              onClick={handleLogout}
-              type="button"
-            >
+            <button className="btn btn-outline-danger" onClick={handleLogout} type="button">
               <i className="fas fa-sign-out-alt"></i>
               <span>Logout</span>
             </button>
